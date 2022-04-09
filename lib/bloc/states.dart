@@ -1,4 +1,5 @@
 import 'package:top_shop/models/login_model.dart';
+import 'package:top_shop/models/user_model.dart';
 
 import '../models/favorites_model.dart';
 
@@ -39,9 +40,8 @@ class GetFavoritesErrorState extends TopShopStates{}
 class UserDataLoadingState extends TopShopStates {}
 
 class UserDataSuccesState extends TopShopStates {
-  final ShopLoginModel shopLoginModel;
-
-  UserDataSuccesState(this.shopLoginModel);
+  final UserModel userModel;
+  UserDataSuccesState(this.userModel);
 
 }
 
@@ -50,8 +50,8 @@ class UserDataErorrState extends TopShopStates {}
 class UpdateUserDataLoadingState extends TopShopStates {}
 
 class UpdateUserDataSuccessState extends TopShopStates {
-  final ShopLoginModel shopLoginModel;
-  UpdateUserDataSuccessState(this.shopLoginModel);
+  final UserModel userModel;
+  UpdateUserDataSuccessState(this.userModel);
 }
 
 class UpdateUserDataErrorState extends TopShopStates {}
@@ -62,3 +62,17 @@ class SearchLoadingState extends TopShopStates{}
 class SearchSuccessState extends TopShopStates{}
 
 class SearchErrorState extends TopShopStates{}
+
+class ShopLoginSuccessState extends TopShopStates{
+  final ShopLoginModel loginModel;
+  ShopLoginSuccessState(this.loginModel);
+}
+
+class ShopLoginLoadingState extends TopShopStates{}
+
+class ShopLoginErrorState extends TopShopStates{
+  final String error;
+  ShopLoginErrorState(this.error);
+}
+
+class ChangeBottomNavState extends TopShopStates{}

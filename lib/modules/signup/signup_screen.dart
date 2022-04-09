@@ -13,10 +13,7 @@ import 'package:top_shop/modules/login/login_screen.dart';
 import 'package:top_shop/modules/signup/register_cubit/register_cubit.dart';
 import 'package:top_shop/modules/signup/register_cubit/register_states.dart';
 
-import '../../layout/shop_layout.dart';
-import '../../models/login_model.dart';
 import '../../network/local/cache_helper.dart';
-import '../login/cubit/login_states.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
@@ -45,7 +42,7 @@ class SignUpScreen extends StatelessWidget {
                 ).then((value) {
                   token = state.loginModel.data!.token!;
                   navigateAndFinish(
-                    const ShopLayout(),
+                    LoginScreen(),
                     context,
                   );
                 });

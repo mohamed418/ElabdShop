@@ -8,6 +8,7 @@ import 'package:top_shop/models/categories_model.dart';
 import 'package:top_shop/models/components.dart';
 import 'package:top_shop/models/home_model.dart';
 import 'package:top_shop/models/search_model.dart';
+import 'package:top_shop/models/user_model.dart';
 import 'package:top_shop/modules/categories/categories_screen.dart';
 import 'package:top_shop/modules/favorites/favorites_screen.dart';
 import 'package:top_shop/modules/product/product_screen.dart';
@@ -147,15 +148,15 @@ class TopShopCubit extends Cubit<TopShopStates> {
     });
   }
 
-  ShopLoginModel? loginModel;
+  UserModel? userModel;
   void getUserData() {
     emit(UserDataLoadingState());
     DioHelper.getData(
       token: CacheHelper.getData(key: "token"),
       url: 'profile',
     ).then((value) {
-      loginModel = ShopLoginModel.fromJson(value.data);
-      emit(UserDataSuccesState(loginModel!));
+      userModel = UserModel.fromJson(value.data);
+      emit(UserDataSuccesState(userModel!));
     }).catchError((error) {
       emit(UserDataErorrState());
       print(error.toString());
@@ -177,9 +178,9 @@ class TopShopCubit extends Cubit<TopShopStates> {
         'phone' : phone,
       },
     ).then((value) {
-      loginModel = ShopLoginModel.fromJson(value.data);
-      emit(UpdateUserDataSuccessState(loginModel!));
-      print(loginModel!.data!.email);
+      userModel = UserModel.fromJson(value.data);
+      emit(UpdateUserDataSuccessState(userModel!));
+      print(userModel!.data!.email);
     }).catchError((error) {
       emit(UpdateUserDataErrorState());
       print(error.toString());
@@ -203,4 +204,34 @@ class TopShopCubit extends Cubit<TopShopStates> {
       print(error.toString());
     });
   }
+
+
+  void login({
+    required String email,
+    required String password,
+  }) {
+
+    emit(ShopLoginLoadingState());
+    DioHelper.postData(
+      url: 'login',
+      data: {'email': email, 'password': password},
+    ).then((value) {
+      //print(value.data['message']);
+      ShopLoginModel loginModel = ShopLoginModel.fromJson(value.data);
+      emit(ShopLoginSuccessState(loginModel));
+    }).catchError((error) {
+      emit(ShopLoginErrorState(error.toString()));
+      print('eeeeeeeee $error');
+    });
+  }
+
+
+  IconData icon = Icons.visibility_off;
+  bool isVisible = false;
+  void visible(){
+    isVisible = !isVisible;
+    icon = isVisible? Icons.visibility : Icons.visibility_off;
+    emit(ChangeBottomNavState());
+  }
+
 }

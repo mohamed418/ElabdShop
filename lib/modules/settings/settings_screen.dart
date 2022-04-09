@@ -25,13 +25,13 @@ class SettingsScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = TopShopCubit.get(context);
-          nameController.text = cubit.loginModel!.data!.name.toString();
-          emailController.text = cubit.loginModel!.data!.email.toString();
-          phoneController.text = cubit.loginModel!.data!.phone.toString();
+          nameController.text = cubit.userModel!.data!.name.toString();
+          emailController.text = cubit.userModel!.data!.email.toString();
+          phoneController.text = cubit.userModel!.data!.phone.toString();
           return Padding(
               padding: const EdgeInsets.all(20),
               child: BuildCondition(
-                condition: cubit.loginModel != null,
+                condition: cubit.userModel != null,
                 builder: (context) => SingleChildScrollView(
                   child: Form(
                     key: formKey,
@@ -128,9 +128,9 @@ class SettingsScreen extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 cubit.getUserData();
-                                nameController.text = cubit.loginModel!.data!.name.toString();
-                                emailController.text = cubit.loginModel!.data!.email.toString();
-                                phoneController.text = cubit.loginModel!.data!.phone.toString();
+                                nameController.text = cubit.userModel!.data!.name.toString();
+                                emailController.text = cubit.userModel!.data!.email.toString();
+                                phoneController.text = cubit.userModel!.data!.phone.toString();
                                 // if (formKey.currentState!.validate()) {
                                 //   FocusScope.of(context).unfocus();
                                 //   cubit.updateUserData(
