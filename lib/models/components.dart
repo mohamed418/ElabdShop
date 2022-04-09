@@ -4,6 +4,7 @@ import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../bloc/cubit.dart';
+import '../modules/product/product_datails.dart';
 
 Color defaultColor = Colors.deepOrange;
 
@@ -70,134 +71,164 @@ Widget catchImage(image, {bool? details}) => CachedNetworkImage(
 
 Widget buildProItem(model, context, {bool isOldPrice = true}) => Padding(
       padding: const EdgeInsets.all(20.0),
-      child: SizedBox(
-        height: 200,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                Image(
-                    height: 200,
-                    width: 200,
-                    image: NetworkImage(
-                      "${model.image}",
-                    )),
-                if (model.discount != 0 && isOldPrice)
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20)),
-                      color: Colors.deepOrange,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(3.5),
-                      child: Text(
-                        'discount',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            //const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: GestureDetector(
+        child: SizedBox(
+          height: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.bottomStart,
                 children: [
-                  SizedBox(
-                    //width: 180,
-                    child: Text(
-                      '${model.name}',
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
+                  Hero(
+                    tag: "${model.name}",
+                    child: CachedNetworkImage(
+                      height: 200,
+                      width: 200,
+                      imageUrl: "${model.image}",
+                      placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   ),
-                  const Spacer(),
-                  Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RichText(
-                        text: TextSpan(children: [
-                          const TextSpan(
-                            text: 'EGP ',
-                            style: TextStyle(
-                              fontSize: 12,
-                              //fontWeight: FontWeight.w900,
-                              color: Colors.deepOrange,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "${model.price}",
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ]),
+                  // Image(
+                  //     height: 200,
+                  //     width: 200,
+                  //     image: NetworkImage(
+                  //       "${model.image}",
+                  //     ),
+                  // ),
+                  if (model.discount != 0 && isOldPrice)
+                    Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20)),
+                        color: Colors.deepOrange,
                       ),
-                      const SizedBox(
-                        width: 5,
+                      child: const Padding(
+                        padding: EdgeInsets.all(3.5),
+                        child: Text(
+                          'discount',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
                       ),
-                      if (model.discount != 0 && isOldPrice)
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: Colors.red,
-                              //decorationThickness: 1.3
-                            ),
-                            children: [
-                              const TextSpan(
-                                text: 'EGP ',
-                              ),
-                              TextSpan(
-                                text: model.oldPrice.toString(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      const Spacer(),
-                      Expanded(
-                        child: AnimatedIconButton(
-                          onPressed: () {
-                            TopShopCubit.get(context)
-                                .changeFavorites(model.id!);
-                          },
-                          animationDirection: const AnimationDirection.bounce(),
-                          duration: const Duration(milliseconds: 500),
-                          splashColor: Colors.deepOrangeAccent,
-                          icons: [
-                            TopShopCubit.get(context).favorites![model.id!]!
-                                ? const AnimatedIconItem(
-                                    icon: Icon(Icons.favorite,
-                                        color: Colors.deepOrange),
-                                  )
-                                : const AnimatedIconItem(
-                                    icon: Icon(Icons.favorite_outline_rounded,
-                                        color: Colors.orange),
-                                  )
-                          ],
-                        ),
-                      )
-                    ],
-                  )
+                    ),
                 ],
               ),
-            ),
-          ],
+              //const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      //width: 180,
+                      child: Text(
+                        '${model.name}',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Row(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          text: TextSpan(children: [
+                            const TextSpan(
+                              text: 'EGP ',
+                              style: TextStyle(
+                                fontSize: 12,
+                                //fontWeight: FontWeight.w900,
+                                color: Colors.deepOrange,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "${model.price}",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ]),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        if (model.discount != 0 && isOldPrice)
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: Colors.red,
+                                //decorationThickness: 1.3
+                              ),
+                              children: [
+                                const TextSpan(
+                                  text: 'EGP ',
+                                ),
+                                TextSpan(
+                                  text: model.oldPrice.toString(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const Spacer(),
+                        if(isOldPrice == true)
+                          Expanded(
+                          child: AnimatedIconButton(
+                            onPressed: () {
+                              TopShopCubit.get(context)
+                                  .changeFavorites(model.id!);
+                            },
+                            animationDirection: const AnimationDirection.bounce(),
+                            duration: const Duration(milliseconds: 500),
+                            splashColor: Colors.deepOrangeAccent,
+                            icons: [
+                              TopShopCubit.get(context).favorites![model.id!]!
+                                  ? const AnimatedIconItem(
+                                      icon: Icon(Icons.favorite,
+                                          color: Colors.deepOrange),
+                                    )
+                                  : const AnimatedIconItem(
+                                      icon: Icon(Icons.favorite_outline_rounded,
+                                          color: Colors.orange),
+                                    )
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailsScreen(
+                  i: model.image,
+                  n: model.name,
+                  d: model.description,
+                  D: model.discount,
+                  id: model.id,
+                  p: model.price,
+                  op: model.oldPrice,
+                ),
+              ));
+        },
       ),
     );
 

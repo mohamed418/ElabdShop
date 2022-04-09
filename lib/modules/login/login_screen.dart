@@ -37,6 +37,7 @@ class LoginScreen extends StatelessWidget {
               value: state.loginModel.data!.token,
             ).then((value) {
               TopShopCubit.get(context).getUserData();
+              TopShopCubit.get(context).getFavoritesData();
               token = state.loginModel.data!.token!;
               navigateAndFinish(
                 const ShopLayout(),
